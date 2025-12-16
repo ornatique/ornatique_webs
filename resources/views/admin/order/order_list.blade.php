@@ -1,0 +1,247 @@
+@extends('admin.template')
+@section('main')
+    <div class="container-fluid">
+        <div class="row">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title mb-4 ">Estimate List</h4>
+                    </div>
+
+                    <div class="toast fade bg-success top-right" id="toast-container-order" role="alert" aria-live="assertive"
+                        aria-atomic="true">
+                        <div class="toast-header">
+                            <i class="mdi mdi-account me-1 text-primary"></i>
+                            <strong class="me-auto">Ornatiques</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body text-white">
+                            Estimate Status Change Successfulyy.
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="dataTable-order" class="table table-bordered dt-responsive nowrap w-100 display">
+
+                            <thead>
+                                <tr>
+                                    <th>Sr No</th>
+                                    <th>Estimate ID</th>
+                                    <th>Customer Name</th>
+                                    <!-- <th>Product Name</th> -->
+                                    <th>Estimate Weight</th>
+                                    <th>Total Quantity</th>
+                                    <th>Estimate Status</th>
+                                    <th>Notes/Remarks</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Print</th>
+                                    <th>PDF</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                               
+                                @foreach ($data as $i => $key)
+                                    <tr id="tr{{ $key->id }}">
+                                        <td>{{ $i + 1 }}</td>
+                                        <td style="white-space: break-spaces">{{ $key->order_id }}</td>
+                                        <td>
+                                          
+                                                {{ ucfirst($key->user_name) }}
+                                           
+                                        </td>
+
+                                        <td>{{ $key->total }}</td>
+                                        <td>{{ $key->total_qun }}</td>
+                                        {{-- <td>{{ $key->remarks }}</td> --}}
+                                        <td style="white-space: break-spacies">
+                                            <select name="status" data-id="{{ $key->id }}" style="width: 150px"
+                                                class="form-select active_status" id="order_status"
+                                                data-user_id="{{ $key->user_id }}">
+                                                <option value="Pending" {{ $key->status == 'Pending' ? 'selected' : '' }}>
+                                                    Pending</option>
+                                                <option value="Approval" {{ $key->status == 'Approval' ? 'selected' : '' }}>
+                                                    Approval</option>
+                                                <option value="Making" {{ $key->status == 'Making' ? 'selected' : '' }}>
+                                                    Making
+                                                </option>
+                                                <option value="Finishing"
+                                                    {{ $key->status == 'Finishing' ? 'selected' : '' }}>
+                                                    Finishing</option>
+                                                <option value="Done" {{ $key->status == 'Done' ? 'selected' : '' }}>
+                                                    Done</option>
+                                            </select>
+                                        </td>
+                                        <td style="white-space: break-spaces" class="wrapword">{{ $key->remarks ?? '-' }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($key->created_at)->isoFormat('MMM Do YYYY') }}</td>
+
+                                        <td>{{ \Carbon\Carbon::parse($key->updated_at)->format('h:i:s') }}</td>
+
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-success print_order"
+                                                data-order-id="{{ $key->order_id }}">Print
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <a href="{{ url('admin/order/pdf') . '/' . $key->order_id }}"> <button
+                                                    class="btn btn-success" data-order-id="{{ $key->order_id }}">PDF
+                                                </button></a>
+                                        </td>
+                                        <td>
+                                            <a href="#"
+                                                onClick="DeleteUser('{{ $key->order_id }}','tr{{ $key->id }}')"
+                                                class="btn btn-danger">
+                                                <i class="bx bx-trash-alt"></i>
+                                                Delete
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- model -->
+
+
+                    <!-- model -->
+
+                    <div class="modal fade" id="DeletePopup" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Confirmation?</h5>
+                                    <a class="" style="cursor: pointer" data-bs-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">X</span>
+                                    </a>
+                                </div>
+                                <form class="user" action="{{ url('admin/order/delete') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="id" id="deleteid" />
+                                    <div class="modal-body">Are you sure want to DELETE this recored?</div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-secondary" type="button"
+                                            data-bs-dismiss="modal">Cancel</button>
+                                        <button data-id="" class="btn btn-danger delete_button"
+                                            type="button">Delete</button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.6.2/jQuery.print.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '.print_order', function() {
+                var order_id = ($(this).data('order-id'));
+                window.open("{{ url('admin/order/invoice') . '/' }}" + order_id, '_blank');
+                return;
+                $.ajax({
+                    method: 'post',
+                    url: "{{ url('admin/order/invoice') . '/' }}" + order_id,
+                    data: {
+                        '_token': "{{ csrf_token() }}",
+                        order_id: order_id,
+                    },
+                    success: function(data) {
+                        // alert(data);
+                        // $.print(data);
+                        // window.print(data);
+                    }
+                })
+            })
+
+            $(document).on('click', '.delete_button', function(e) {
+                var id = $('#deleteid').val();
+                var tr = $(this).attr('data-id');
+                $.ajax({
+                    method: 'POST',
+                    url: "{{ url('admin/order/delete') }}",
+                    data: {
+                        id: id,
+                        _token: '{{ csrf_token() }}',
+                    },
+                    success: function(data) {
+                        // alert(data.msg);
+                        $('#' + tr).remove();
+                        $('#DeletePopup').modal('hide');
+                    }
+                })
+            })
+
+
+            var table = $('#dataTable-order').DataTable({
+                responsive: true,
+                order: [
+                    [0, "desc"]
+                ],
+                "pageLength": 100,
+            });
+
+            table.buttons().container()
+                .appendTo('#dataTable-order_filter');
+
+
+            $('.view_button').click(function() {
+                var id = $(this).attr('data-id');
+                $.ajax({
+                    'method': 'POST',
+                    url: "{{ url('admin/order/detail') }}",
+                    data: {
+                        token: "{{ csrf_token() }}",
+                        id: id,
+                    },
+                    success: function(data) {
+                        $('#details').html(data);
+                        $('#orderDetailModal').modal('show');
+                    }
+                });
+            })
+
+            $('.active_status').on('change', function() {
+                let id = $(this).attr('data-id');
+                let user_id = $(this).attr('data-user_id');
+                let val = $(this).val();
+                $.ajax({
+                    method: 'POST',
+                    url: "{{ url('admin/orderStatusChange') }}",
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: id,
+                        status: val,
+                        user_id: user_id,
+                    },
+                    success: function(data) {
+                        $("#toast-container-order").removeClass('hide');
+                        $("#toast-container-order").addClass('show');
+                        $("#toast-container-order").show();
+                        $("#toast-container-order").delay(3000).fadeOut('show');
+                    }
+                });
+            });
+        })
+
+        function DeleteUser(id, tr) {
+            $('#deleteid').val(id);
+            $('.delete_button').attr('data-id', tr);
+            $('#DeletePopup').modal('show');
+        }
+
+        // function imprimir() {
+        //     var divToPrint = document.getElementById("ConsutaBPM");
+        //     newWin = window.open("");
+        //     newWin.document.write(divToPrint.outerHTML);
+        //     newWin.print();
+        //     newWin.close();
+        // }
+    </script>
+    {{-- <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"> --}}
+    {{-- <link href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css"> --}}
+
+@stop

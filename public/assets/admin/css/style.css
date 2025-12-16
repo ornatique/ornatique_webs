@@ -1,0 +1,201 @@
+body[data-sidebar=dark] .navbar-brand-box {
+    /* background: #333333 !important; */
+    background: #143632 !important;
+    /* background: #EEBC1D !important; */
+    border-bottom: 1px solid #000;
+}
+
+body[data-sidebar=dark] .vertical-menu {
+    /* background: #000000 !important; */
+    background: #143632 !important;
+    border-right: none;
+}
+
+body[data-sidebar=dark] #sidebar-menu ul li a i {
+    color: #fff !important;
+    /* color: #EEBC1D !important; */
+}
+
+table.table-bordered.dataTable th,
+table.table-bordered.dataTable tbody td {
+    border-bottom-width: 1px !important;
+}
+
+
+/* body[data-sidebar=dark] #sidebar-menu ul li a:hover {
+    color: #eebc1d !important;
+} */
+
+#sidebar-menu ul.metismenu>li.mm-active>a {
+    background-color: #eebc1d !important;
+    color: #000 !important;
+}
+
+#sidebar-menu ul.metismenu>li.mm-active>a>i {
+    color: #000 !important;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #000 !important;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: bold;
+    margin-right: 2px;
+}
+
+.select2-container .select2-selection--multiple .select2-selection__choice {
+    background-color: #EEBC1D !important;
+    border: 1px solid #EEBC1D !important;
+    border-radius: 1px;
+    padding: 0 7px;
+    color: #000;
+}
+
+.select2-container--default .select2-results__option[aria-selected=true] {
+    background-color: #eebc1d !important;
+    color: #343a40;
+    border: 0.5px solid #ebb100 !important;
+}
+
+ul.multiselect-ul {
+    padding-left: 0;
+}
+
+.multiselect-ul .multiselect-li {
+    list-style-type: none;
+    padding: 6px 0 6px 15px;
+}
+
+.ms-options-wrap>.ms-options>ul label {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    padding: 4px;
+    font-weight: 600;
+}
+
+.ms-options-wrap>.ms-options>ul input[type="checkbox"] {
+    margin-right: 5px;
+    position: absolute;
+    left: 4px;
+    top: 7px;
+    height: 18px;
+    width: 18px;
+}
+
+.multiselect-ul .multiselect-li.selected,
+.multiselect-ul .multiselect-li:hover {
+    background-color: #efefef;
+}
+
+.ms-options-wrap>.ms-options .ms-selectall {
+    display: inline-block;
+    font-size: .9em;
+    text-transform: none;
+    text-decoration: none;
+    padding: 0.47rem 0.75rem;
+    font-size: 16px;
+    color: #2196f3;
+    font-weight: 600;
+}
+
+.ms-options-wrap>button:focus,
+.ms-options-wrap>button {
+    position: relative;
+    width: 100%;
+    text-align: left;
+    border: 1px solid #aaa;
+    background-color: #fff;
+    padding: 0.47rem 0.75rem;
+    margin-top: 1px;
+    font-size: 15px;
+    color: #000;
+    outline: none;
+    white-space: nowrap;
+}
+
+.ms-options-wrap>.ms-options>.ms-search input {
+    width: 100%;
+    padding: 0.47rem 0.75rem;
+    border: none;
+    border-bottom: 1px groove;
+    outline: none;
+}
+
+.ms-options-wrap>.ms-options {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    margin-top: 1px;
+    margin-bottom: 20px;
+    background: white;
+    z-index: 2000;
+    border: 1px solid #aaa;
+    text-align: left;
+    overflow-y: scroll;
+    max-height: 300px !important;
+}
+
+.btn-group-vertical>.btn,
+.btn-group>.btn {
+    color: #fff;
+    background-color: #0576b9;
+    border-color: #0576b9;
+    margin-right: 10px;
+
+}
+
+div.dataTables_wrapper div.dataTables_filter label {
+    margin-right: 10px;
+}
+
+
+/* Harsh CSS */
+table.dataTable tbody>tr.selected,
+table.dataTable tbody>tr>.selected {
+    background-color: #0576b9;
+    color: #fff;
+}
+
+.buttons-pdf {
+    margin-right: 10px;
+}
+
+@media print {
+    @page {
+        margin: 0;
+    }
+
+    body {
+        margin: 1.6cm;
+    }
+}
+
+.wrapword {
+    white-space: -moz-pre-wrap !important;
+    /* Mozilla, since 1999 */
+    white-space: -webkit-pre-wrap;
+    /* Chrome & Safari */
+    white-space: -pre-wrap;
+    /* Opera 4-6 */
+    white-space: -o-pre-wrap;
+    /* Opera 7 */
+    white-space: pre-wrap;
+    /* CSS3 */
+    word-wrap: break-word;
+    /* Internet Explorer 5.5+ */
+    word-break: break-all;
+    white-space: normal;
+}
+
+.cke_notification_warning {
+    background: #c83939;
+    border: 1px solid #902b2b;
+    display: none;
+}
