@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Heading;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
+use Log;
 class HeadingController extends Controller
 {
     public function heading_list(Request $request)
@@ -14,7 +15,14 @@ class HeadingController extends Controller
         $validation = Validator::make($request->all(), [
             'user_id' => 'required' // if needed, otherwise remove this
         ]);
-
+         Log::info("FCM token", $request->all());
+        $user = User::where('id', $request->user_id)->first();
+        if ($user->token == "") {
+            Log::info("RAW REQUEST", $request->all());
+            $user->token  = $request->fcm_token ?? $request->token ?? null;
+            $user->device_type = $request->device_type;
+            $user->save();
+        }
         if ($validation->fails()) {
             return response()->json([
                 'status' => '0',

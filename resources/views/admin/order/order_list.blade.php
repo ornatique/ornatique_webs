@@ -43,7 +43,7 @@
                                
                                 @foreach ($data as $i => $key)
                                     <tr id="tr{{ $key->id }}">
-                                        <td>{{ $i + 1 }}</td>
+                                        <td>{{ $loop->iteration }}</td>
                                         <td style="white-space: break-spaces">{{ $key->order_id }}</td>
                                         <td>
                                           
@@ -55,7 +55,7 @@
                                         <td>{{ $key->total_qun }}</td>
                                         {{-- <td>{{ $key->remarks }}</td> --}}
                                         <td style="white-space: break-spacies">
-                                            <select name="status" data-id="{{ $key->id }}" style="width: 150px"
+                                           <select name="status" data-id="{{ $key->order_id }}" style="width: 150px"
                                                 class="form-select active_status" id="order_status"
                                                 data-user_id="{{ $key->user_id }}">
                                                 <option value="Pending" {{ $key->status == 'Pending' ? 'selected' : '' }}>
@@ -179,9 +179,9 @@
             var table = $('#dataTable-order').DataTable({
                 responsive: true,
                 order: [
-                    [0, "desc"]
+                    [0, "asc"]
                 ],
-                "pageLength": 100,
+                "pageLength": 10,
             });
 
             table.buttons().container()

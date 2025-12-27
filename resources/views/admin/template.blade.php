@@ -372,15 +372,15 @@
                                     </li>
                                 </ul>
                             </li>
-                             @if ($user_role->custom_notification != 0)
+                            @if ($user_role->custom_notification != 0)
                             <li>
                                 <a href="{{ url('admin/custom/notificaion') }}" class="waves-effect">
                                     <i class="bx bx-bell"></i>
                                     <span>Custom Notifications</span>
                                 </a>
                             </li>
-                             @endif
                         @endif
+                         @endif
                     </ul>
                 </div>
             </div>
@@ -417,7 +417,9 @@
     <script>
         $(document).ready(function() {
             $('#datatable').DataTable({
-                 order: [[0, 'asc']],
+                order: [
+                    [1, 'desc']
+                ],
             });
         });
     </script>

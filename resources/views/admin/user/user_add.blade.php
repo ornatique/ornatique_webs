@@ -18,7 +18,7 @@
                         <form action="{{ url('admin/user/add') }}" class="row" method="post" enctype="multipart/form-data"
                             id="userForm">
                             @csrf
-
+                             <input type="hidden" name="type" value="{{ request('type') }}">
                             <div class="col-lg-4">
                                 <div class="mb-3">
                                     <label for="example-text-input" class="form-label">Name <span

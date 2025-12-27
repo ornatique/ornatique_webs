@@ -38,7 +38,7 @@
                             <tbody>
                                 @foreach ($data as $key)
                                     <tr id="tr{{ $key->id }}">
-                                        <td>{{ $loop->iteration }}</td>
+                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $key->user ? ucfirst($key->user->name) : '' }}</td>
                                         <td>
                                             <img width='80'

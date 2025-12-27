@@ -122,10 +122,14 @@
                                 : null;
                         }
                     @endphp
-
+                        
                     <td class="text-center">
-                        @if($imgPath && file_exists($is_pdf ? $imgPath : public_path('assets/images/product/' . $image)))
-                            <img src="{{ $imgPath }}" width="100">
+                        @if($image)
+                            @if($is_pdf)
+                                <img src="{{ public_path('assets/images/product/'.$image) }}" width="100">
+                            @else
+                                <img src="{{ asset('public/assets/images/product/'.$image) }}" width="100">
+                            @endif
                         @else
                             <span>No Image</span>
                         @endif

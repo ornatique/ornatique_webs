@@ -48,7 +48,7 @@
                             <tbody>
                                 @foreach ($data as $key)
                                     <tr id="tr{{ $key->id }}">
-                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $key->id }}</td>
                                         <td>{{ $key->title }}</td>
                                         <td>{{ $key->description }}</td>
                                         <td>{{ $key->category ? ucfirst($key->category->name) : 'N/A' }}</td>

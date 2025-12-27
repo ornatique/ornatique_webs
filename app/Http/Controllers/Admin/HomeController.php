@@ -16,8 +16,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
 use App\Models\Privacy;
 // use Barryvdh\DomPDF\PDF;
-use Barryvdh\DomPDF\Facade\Pdf;
+// use Barryvdh\DomPDF\Facade\Pdf;
 // use Barryvdh\DomPDF\Facade as PDF;
+use Barryvdh\DomPDF\PDF as DomPdf;
 use Dompdf\FrameDecorator\Image;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -260,15 +261,14 @@ class HomeController extends Controller
     public function orderStatusChange(Request $request)
     {
         $order_id = '';
-        $user_id = null;
-
+        $user_id = $request->user_id;
         if ($request->custom) {
-            $data = Custum_order::find($request->id);
+            $data = Custum_order::where('user_id', $user_id)->first();
             $data->status = $request->status;
             $user_id = $data->user_id;
             $data->save();
         } else {
-            $data = Order::find($request->id);
+            $data = Order::where('user_id', $user_id)->first();
             $order_id = $data->order_id;
             $user_id = $data->user_id;
             $data->status = $request->status;
@@ -401,17 +401,34 @@ class HomeController extends Controller
         $data['is_pdf'] = false;
         return view('admin.invoice', $data);
     }
-    public function pdf(Request $request, $order_id)
+
+    public function pdf($order_id)
     {
         $data = $this->invoiceData($order_id);
 
-        $pdf = PDF::loadView('admin.invoice', array_merge($data, [
+        /** @var DomPdf $pdf */
+        $pdf = app()->make(DomPdf::class);
+        $pdf->setOptions([
+        'isRemoteEnabled' => true,
+        'chroot' => base_path(), // ✅ THIS FIXES IMAGE ISSUE
+    ]);
+        $pdf->loadView('admin.invoice', array_merge($data, [
             'is_pdf' => true
         ]));
 
         return $pdf->download($order_id . '-invoice.pdf');
-
     }
+    // public function pdf(Request $request, $order_id)
+    // {
+        
+    //     $data = $this->invoiceData($order_id);
+    //     $pdf = PDF::loadView('admin.invoice', array_merge($data, [
+    //         'is_pdf' => true
+    //     ]));
+        
+    //     return $pdf->download($order_id . '-invoice.pdf');
+
+    // }
 
     public function custom_invoice(Request $request, $id)
     {

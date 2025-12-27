@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Models\User;
+use App\Models\App_version;
 use App\Mail\sendEmail;
 use Illuminate\Foundation\Auth\EmailVerificationRequest as BaseEmailVerificationRequest;
 use Log;
@@ -410,6 +411,8 @@ class RegisterController extends Controller
 
  public function login(Request $request)
     {
+       
+Log::info("RAW REQUEST", $request->all());
         $validator = Validator::make($request->all(), [
             'number' => 'required',
             'password' => 'required',
@@ -460,9 +463,18 @@ class RegisterController extends Controller
                 'message' => 'Already logged in from another device.'
             ], 200);
         }
-
+   
         // ✅ Remove old access tokens and generate a new one
-        $user->tokens()->delete();
+        // $user->tokens()->delete();
+        
+             
+        if ($user->token !== "") {
+            Log::info("RAW REQUEST", $request->all());
+            $user->token  = $request->fcm_token ?? $request->token ?? null;
+            $user->device_type = $request->device_type;
+            $user->save();
+        }
+    
         $token = $user->createToken('token')->plainTextToken;
 
         return response()->json([
@@ -620,4 +632,29 @@ class RegisterController extends Controller
             ], 500);
         }
     }
+    // force update to AppVersion
+    public function version_check(Request $request)
+{
+    $platform = $request->platform; // android / ios
+    $currentVersion = $request->version;
+
+    $latest = App_version::where('platform', $platform)
+                ->latest()
+                ->first();
+
+    if (!$latest) {
+        return response()->json(['update' => false]);
+    }
+
+    if (version_compare($currentVersion, $latest->version, '<')) {
+        return response()->json([
+            'update' => true,
+            'force_update' => $latest->force_update,
+            'message' => $latest->message,
+            'store_url' => $latest->store_url
+        ]);
+    }
+
+    return response()->json(['update' => false]);
+}
 }
