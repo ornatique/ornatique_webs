@@ -98,6 +98,7 @@ class UserController extends Controller
 
     public function add(Request $request)
     {
+         $type = $request->input('type');
         if ($request->isMethod('post')) {
             $request->validate([
                 'name' => 'required|string|min:2|max:255',
@@ -140,7 +141,11 @@ class UserController extends Controller
             $data->user_id = $user->id;
             $data->save();
 
-            return redirect()->route('customer_list')->with('msg', 'User Added Successfully...!!!');
+             if($type == "customer"){
+                  return redirect('/admin/custumer/list')->with('msg', 'Customer Add Successfully...!!!');
+            }else{
+                 return redirect()->route('admin_user_list')->with('msg', 'User Add Successfully...!!!');
+            }
         }
 
         $type = $request->query('type', null);

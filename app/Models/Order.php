@@ -29,6 +29,10 @@ class Order extends Model
     {
         return $this->hasMany(Order::class, 'order_id', 'order_id')->with('product');
     }
+    public function product_order()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
 
     // public function getCreatedAtAttribute($value)
     // {

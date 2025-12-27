@@ -37,6 +37,8 @@ class OrederController extends Controller
     ->select(
         'orders.order_id',
         DB::raw('MAX(users.name) AS user_name'),
+        DB::raw('MAX(users.id) AS user_id'),
+        DB::raw('MAX(orders.status) AS status'),
         DB::raw('CAST(SUM(orders.weight * orders.quantity) AS DECIMAL(10,3)) AS total'),
         DB::raw('SUM(orders.quantity) AS total_qun'),
         DB::raw('MAX(orders.remarks) AS remarks'),

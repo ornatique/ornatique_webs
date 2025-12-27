@@ -10,7 +10,7 @@
                             <a href="{{ url('admin/user/add?type=customer') }}">
                                 <button class="btn btn-primary">
                                     <i class="bx bx-plus"></i>
-                                    Add Customer
+                                    Add Customers
                                 </button>
                             </a>
                         </h4>

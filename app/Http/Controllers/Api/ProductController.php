@@ -38,12 +38,7 @@ class ProductController extends Controller
         })
             ->select('products.*', DB::raw("ifnull(is_key, 0) as is_key"));
         // $products = $products->orderBy('id', 'DESC')->orderBy('created_at', 'DESC')->get();
-        //$products = $products->orderByRaw('CAST(name AS INTEGER) DESC')->orderBy('created_at', 'DESC')->get();
-        $products = $products
-        ->orderByRaw('CAST(name AS SIGNED) DESC')
-        ->orderBy('created_at', 'DESC')
-        ->get();
-
+        $products = $products->orderByRaw('CAST(name AS INTEGER) DESC')->orderBy('created_at', 'DESC')->get();
         if (count($products) > 0) {
             return response()->json(['status' => '1', 'image_url' => asset('public/assets/images/product'), 'message' => 'Product List', 'data' => $products], 200);
         } else {

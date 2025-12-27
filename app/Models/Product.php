@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 class Product extends Model
 {
     use HasFactory;
-    protected $fillable = [
+     protected $fillable = [
     'name',
     'category_id',
     'subcategory_id',
@@ -28,7 +28,6 @@ class Product extends Model
     'bg_color',
     'order_confirm',
 ];
-
 
     public function category()
     {

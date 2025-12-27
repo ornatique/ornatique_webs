@@ -44,7 +44,7 @@
                             <tbody>
                                 @foreach ($data as $key)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
+                                       <td>{{ $loop->iteration }}</td>
                                         <td>
                                             @if ($key->product)
                                                 {{ ucfirst($key->product->name) }}

@@ -48,7 +48,7 @@
                             <tbody>
                                 @foreach ($layouts as $layout)
                                     <tr id="tr{{ $layout->id }}">
-                                        <td>{{ $loop->iteration }}</td>
+                                       <td>{{ $loop->iteration }}</td>
                                         <td>
                                             @if ($layout->image)
                                                 <img width="80"

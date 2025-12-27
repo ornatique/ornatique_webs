@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
-use App\Models\Save;
 use App\Models\Cart;
+use App\Models\Save;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -176,20 +176,19 @@ class SaveController extends Controller
             $data->product_id = $request->product_id;
             $data->is_save = $request->is_save;
             $data->save();
-            // save the data in cart 
-
+            
             $cart = Cart::where('user_id', $request->user_id)
             ->where('product_id', $request->product_id)
             ->first();
-
+            
             if (!$cart) {
             Cart::create([
                 'user_id'   => $request->user_id,
                 'product_id' => $request->product_id,
                 'quantity'  => $request->quantity ?? 1,
-                ]);
+            ]);
             }
-
+        
             // Load product relation
             $data->load('product');
 

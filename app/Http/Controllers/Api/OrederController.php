@@ -158,21 +158,27 @@ class OrederController extends Controller
 
         //     ->selectRaw('*, CAST(sum(weight * quantity) as DECIMAL(10,3)) as total')
         //     ->get();
-            $orders = Order::where('user_id', $request->user_id)
-                ->select(
-                    'order_id',
-                    DB::raw('SUM(weight * quantity) as total_weight'),
-                    DB::raw('MAX(updated_at) as updated_at')
-                )
-                ->groupBy('order_id')
-                ->orderBy('updated_at', 'DESC')
-                ->get();
+           $orders = Order::where('user_id', $request->user_id)
+            ->select(
+                'order_id',
+                DB::raw('SUM(weight * quantity) as total_weight'),
+                DB::raw('MAX(updated_at) as updated_at'),
+                DB::raw('MAX(status) as status')
+            )
+            ->groupBy('order_id')
+            ->orderBy('updated_at', 'DESC')
+            ->get();
 
-            $orders->each(function ($order) {
-                $order->products = Order::with('product')
-                    ->where('order_id', $order->order_id)
-                    ->get();
-            });
+        $orders->each(function ($order) {
+            $order->products = Order::where('order_id', $order->order_id)
+                ->select('id','order_id','product_id')
+                ->with([
+                    'product_order' => function ($q) {
+                        $q->select('id','name','gallery');
+                    }
+                ])
+                ->get();
+        });
         if (count($orders) > 0) {
             return response()->json(['status' => '1', 'message' => 'Ordered List', 'image_url' => asset('public/assets/images/product'), 'data' => $orders], 200);
         } else {
