@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\SocialController;
 use App\Http\Controllers\Admin\StoreCollection;
 use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\WebNotificationController;
+use App\Http\Controllers\Admin\EventController;
 use App\Models\Custum_order;
 use App\Models\Privacy;
 use Illuminate\Support\Facades\Auth;
@@ -258,9 +259,13 @@ Route::group(
 
         // Fetch products by subcategory
         Route::get('get-products/{subcategory_id}', [EssentialController::class, 'getProducts']);
+
+        
     },
 );
-
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('events', EventController::class);
+});
 Route::get('admin/get-cities/{state}', [TaskController::class, 'getCities']);
 Route::get('admin/get-users/{state}/{city}', [TaskController::class, 'getUsers']);
 

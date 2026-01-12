@@ -20,12 +20,12 @@ use App\Http\Controllers\Api\ProductBannerController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\SaveController;
 use App\Http\Controllers\Api\SmsController;
+use App\Http\Controllers\Api\VisionController;
+use App\Http\Controllers\Api\EventViewController;
 use App\Models\Customorder;
 use App\Models\Notification;
 use App\Models\Product_banners;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Middleware\CheckAppVersion;
-use App\Http\Controllers\Api\VisionController;
 
 use Symfony\Component\HttpKernel\DependencyInjection\RegisterControllerArgumentLocatorsPass;
 
@@ -56,7 +56,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware([CheckAppVersion::class])->group(function () {
 Route::post('category/list', [CategoryController::class, 'list'])->name('category_list');
 Route::post('category/list/new', [CategoryController::class, 'category_list'])->name('category_list_new');
 Route::post('category/add', [CategoryController::class, 'add'])->name('category_add');
@@ -164,10 +163,12 @@ Route::post('headings', [HeadingController::class, 'heading_list']);
 
 Route::get('layouts', [LayoutController::class, 'list']);
 Route::get('layouts/inside', [LayoutController::class, 'list_name']);
-});
-//update new version force update
-Route::get('/check-version', [RegisterController::class, 'version_check']);
 
 Route::post('vision/analyze', [VisionController::class, 'analyze']);
+
+
+Route::get('events', [EventViewController::class, 'index']);
+Route::get('events/{id}', [EventViewController::class, 'show']);
+Route::get('events/type/{type}', [EventViewController::class, 'byType']);
 
 Auth::routes();
